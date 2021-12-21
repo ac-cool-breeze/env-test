@@ -1,0 +1,10 @@
+# builds out express and removes admin routes based on env var
+FROM node:12-alpine
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY . .
+RUN npm install
+EXPOSE 3000
+RUN echo "internal mapping port 3000... test"
+RUN if [[ -z "$production" ]] ; then rm ./routes/admin.js ; else echo Leaving ; fi
+ENTRYPOINT [ "npm", "start" ]
